@@ -1,0 +1,7 @@
+name: power-grid-telemetry-monitor
+
+services:
+  simulator:
+    build:
+      context: ./simulator
+    container_name: power-grid-simulator
