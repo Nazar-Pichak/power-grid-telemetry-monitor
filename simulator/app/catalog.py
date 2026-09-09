@@ -5,7 +5,7 @@ from app.models import Substation, TransformerProfile
 
 def create_substations() -> tuple[Substation, ...]:
     """Create all substations in the simulated electrical grid."""
-    
+
     return (
         Substation(
             code="PLZEN-NORTH",
@@ -23,18 +23,16 @@ def create_substations() -> tuple[Substation, ...]:
             city="Prague",
         ),
     )
-    
-    
+
+
 def create_substation_lookup(substations: tuple[Substation, ...]) -> dict[str, Substation]:
     """Create a lookup that maps station codes to substations."""
-    
+
     lookup: dict[str, Substation] = {}
 
     for substation in substations:
         if substation.code in lookup:
-            raise ValueError(
-                f"Duplicate substation code: {substation.code}"
-            )
+            raise ValueError(f"Duplicate substation code: {substation.code}")
 
         lookup[substation.code] = substation
 
@@ -43,7 +41,7 @@ def create_substation_lookup(substations: tuple[Substation, ...]) -> dict[str, S
 
 def create_transformers(substations_by_code: dict[str, Substation]) -> tuple[TransformerProfile, ...]:
     """Create all transformer profiles in the simulated grid."""
-    
+
     station_configurations = (
         ("PLZEN-NORTH", "PLN"),
         ("PLZEN-SOUTH", "PLS"),
@@ -60,7 +58,7 @@ def create_transformers(substations_by_code: dict[str, Substation]) -> tuple[Tra
             device_code = (f"TRF-{device_prefix}-{device_number:02d}")
             base_load_ratio = round(0.35 + device_number * 0.05, 2)
             base_temperature_c = (42.0 + device_number * 2.0)
-            
+
             transformer = TransformerProfile(
                 code=device_code,
                 name=(

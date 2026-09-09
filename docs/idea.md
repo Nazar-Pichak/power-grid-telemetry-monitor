@@ -24,28 +24,6 @@ My industry background helps me model realistic:
 The simulation continuously generates realistic telemetry measurements and publishes them as a live data stream. These measurements can then be validated, processed, stored, analyzed, and displayed through a monitoring dashboard.
 The simulated data provides a controlled and reproducible alternative to real power-grid telemetry while preserving the main characteristics of a real streaming system.
 
-## Project Concept
-
-```mermaid
-flowchart TD
-    A["Public real-time power-grid data is unavailable"]
-    B["Create a realistic grid simulation"]
-    C["Generate continuous transformer telemetry"]
-    D["Process telemetry through a streaming pipeline"]
-    E["Store and analyze measurements"]
-    F["Monitor equipment and detect abnormal conditions"]
-
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-```
-
-## Core Project Goal
-
-The goal of the project is to build a realistic, modular, and testable live-streaming platform that demonstrates how telemetry from electrical substations and transformers can move through a complete data pipeline—from generation to monitoring.
-
 ## How It Can Be Useful
 
 The project has both educational and practical value:

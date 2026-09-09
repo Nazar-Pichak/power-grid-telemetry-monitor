@@ -4,4 +4,10 @@ services:
   simulator:
     build:
       context: ./simulator
+      target: runtime
     container_name: power-grid-simulator
+
+  simulator-tests:
+    build:
+      context: ./simulator
+      target: test
