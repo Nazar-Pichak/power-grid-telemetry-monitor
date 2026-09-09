@@ -4,28 +4,6 @@ Power Grid Telemetry Monitor is a containerized event-streaming project that sim
 
 The project combines software development, data engineering, industrial telemetry, automated testing, and system monitoring. All telemetry is simulated; the project does not connect to or control real electrical equipment.
 
-## Project Concept
-
-```mermaid
-flowchart TD
-    A["Public real-time power-grid data is unavailable"]
-    B["Create a realistic grid simulation"]
-    C["Generate continuous transformer telemetry"]
-    D["Process telemetry through a streaming pipeline"]
-    E["Store and analyze measurements"]
-    F["Monitor equipment and detect abnormal conditions"]
-
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-```
-
-## Core Project Goal
-
-The goal of the project is to build a realistic, modular, and testable live-streaming platform that demonstrates how telemetry from electrical substations and transformers can move through a complete data pipeline—from generation to monitoring.
-
 # Project status
 
 ## Completed
