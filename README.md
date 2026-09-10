@@ -11,7 +11,7 @@ The project combines software development, data engineering, industrial telemetr
 - [x] M0: Project preparation, defined architecture, rulles, technologies and goals
 - [x] M1: Simulator
 
-## Next
+## Next steps
 - [ ] M2: MQTT broker and telemetry transport
 - [ ] M3: MQTT-Kafka Bridge
 - [ ] M4: Redpanda and dead-letter topic
@@ -29,7 +29,7 @@ have passed.
 
 # Other docs
 
-- [Problem and Motivation](docs/idea.md)
+- [Project Idea](docs/idea.md)
 - [System Architecture](docs/architecture.md)
 - [Telemetry Simulator](docs/simulator.md)
 - [Simulator Usage](simulator/README.md)

@@ -147,6 +147,6 @@ Each line represents one complete and independently validated transformer teleme
 
 ## Related Documentation
 
-- [Project Overview](../docs/idea.md)
+- [Project Idea](../docs/idea.md)
 - [System Architecture](../docs/architecture.md)
 - [Telemetry Simulator](../docs/simulator.md)
