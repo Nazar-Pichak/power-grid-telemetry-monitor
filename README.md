@@ -27,7 +27,7 @@ The project combines software development, data engineering, industrial telemetr
 No later milestone may be marked complete before all checks for its predecessor
 have passed.
 
-## Documentation section
+# Documentation section
 
 ### General docs
 - [Project Idea](docs/idea.md)
