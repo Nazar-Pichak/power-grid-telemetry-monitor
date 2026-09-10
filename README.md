@@ -29,10 +29,10 @@ have passed.
 
 # Documentation section
 
-### General docs
+## General docs
 - [Project Idea](docs/idea.md)
 - [System Architecture](docs/architecture.md)
 
-### Simulator docs
+## Simulator docs
 - [Telemetry Simulator](docs/simulator.md)
 - [Simulator Usage](simulator/README.md)
