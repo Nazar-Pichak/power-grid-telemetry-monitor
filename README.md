@@ -27,9 +27,12 @@ The project combines software development, data engineering, industrial telemetr
 No later milestone may be marked complete before all checks for its predecessor
 have passed.
 
-# Other docs
+## Documentation section
 
+### General docs
 - [Project Idea](docs/idea.md)
 - [System Architecture](docs/architecture.md)
+
+### Simulator docs
 - [Telemetry Simulator](docs/simulator.md)
 - [Simulator Usage](simulator/README.md)
