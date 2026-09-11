@@ -4,6 +4,7 @@ import pytest
 
 from app.cli import parse_simulation_settings
 from app.scenarios import FaultScenario
+from app.transport import PublisherTransport
 
 
 def test_cli_uses_default_settings_when_no_arguments_are_provided() -> None:
@@ -68,3 +69,14 @@ def test_cli_rejects_zero_cycle_count() -> None:
 def test_cli_rejects_negative_interval() -> None:
     with pytest.raises(ValueError, match="Interval cannot be negative"):
         parse_simulation_settings(["--interval", "-0.1"])
+
+
+def test_mqtt_transport_is_parsed() -> None:
+    settings = parse_simulation_settings(["--transport", "mqtt"])
+
+    assert settings.transport is PublisherTransport.MQTT
+
+
+def test_unknown_transport_is_rejected() -> None:
+    with pytest.raises(SystemExit):
+        parse_simulation_settings(["--transport", "unknown"])

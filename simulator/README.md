@@ -1,6 +1,6 @@
 # Power Grid Telemetry Simulator
 
-Containerized Python simulator that generates validated transformer telemetry as JSON Lines.
+Containerized Python simulator that generates validated transformer telemetry and sends it through a selected output transport.
 
 Detailed design documentation is available in [Telemetry Simulator](../docs/simulator.md).
 
@@ -96,6 +96,39 @@ docker compose run --rm simulator python -m app.main --help
 | `--seed` | Optional deterministic random seed |
 | `--device-code` | Transformer selected for a fault scenario |
 | `--scenario` | Scenario applied to the selected transformer |
+| `--transport` | Output transport: `console` or `mqtt` |
+
+
+## Output Transports
+
+The simulator supports two output transports:
+
+| Transport | Behaviour |
+|---|---|
+| `console` | Writes one compact JSON object per line |
+| `mqtt` | Publishes each message to a device-specific MQTT topic |
+
+Console output is the default when the simulator is started directly.
+
+Run one cycle with console output:
+
+```powershell
+docker compose run --rm simulator python -m app.main `
+    --cycles 1 `
+    --interval 0 `
+    --transport console
+```
+
+Run one cycle through MQTT:
+
+```powershell
+docker compose run --rm simulator python -m app.main `
+    --cycles 1 `
+    --interval 0 `
+    --transport mqtt
+```
+
+The MQTT broker must be running before the MQTT transport is used. Broker setup and operating commands are documented in [Mosquitto Broker Usage](../infrastructure/mosquitto/README.md).
 
 ## Tests
 
@@ -150,3 +183,5 @@ Each line represents one complete and independently validated transformer teleme
 - [Project Idea](../docs/idea.md)
 - [System Architecture](../docs/architecture.md)
 - [Telemetry Simulator](../docs/simulator.md)
+- [MQTT Broker and Telemetry Transport](../docs/mqtt.md)
+- [Mosquitto Broker Usage](../infrastructure/mosquitto/README.md)

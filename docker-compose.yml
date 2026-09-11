@@ -6,8 +6,35 @@ services:
       context: ./simulator
       target: runtime
     container_name: power-grid-simulator
+    command:
+      - python
+      - -m
+      - app.main
+      - --transport
+      - mqtt
+    depends_on:
+      mqtt:
+        condition: service_healthy
 
   simulator-tests:
     build:
       context: ./simulator
       target: test
+
+    profiles:
+      - test
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: power-grid-mqtt
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./infrastructure/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+    healthcheck:
+      test: ["CMD", "mosquitto_pub", "-h", "localhost", "-p", "1883", "-t", "healthcheck", "-m", "ping", "-q", "1"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 3s

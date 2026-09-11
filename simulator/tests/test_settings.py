@@ -4,6 +4,7 @@ import pytest
 
 from app.scenarios import FaultScenario
 from app.settings import SimulationSettings
+from app.transport import PublisherTransport
 
 
 def test_default_settings_enable_continuous_normal_simulation() -> None:
@@ -47,3 +48,15 @@ def test_negative_interval_is_rejected() -> None:
 def test_empty_device_code_is_rejected(device_code: str) -> None:
     with pytest.raises(ValueError, match="Device code cannot be empty"):
         SimulationSettings(device_code=device_code)
+
+
+def test_default_transport_is_console() -> None:
+    settings = SimulationSettings()
+
+    assert settings.transport is PublisherTransport.CONSOLE
+
+
+def test_mqtt_transport_is_accepted() -> None:
+    settings = SimulationSettings(transport=PublisherTransport.MQTT)
+
+    assert settings.transport is PublisherTransport.MQTT

@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 
 from app.scenarios import FaultScenario
+from app.transport import PublisherTransport
 
 
 @dataclass(frozen=True)
@@ -15,6 +16,7 @@ class SimulationSettings:
 
     interval_seconds: float = 1.0
     seed: int | None = None
+    transport: PublisherTransport = PublisherTransport.CONSOLE
     device_code: str | None = None
     scenario: FaultScenario = FaultScenario.NORMAL
 

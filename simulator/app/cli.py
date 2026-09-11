@@ -5,6 +5,7 @@ from collections.abc import Sequence
 
 from app.scenarios import FaultScenario
 from app.settings import SimulationSettings
+from app.transport import PublisherTransport
 
 
 def parse_simulation_settings(arguments: Sequence[str] | None = None) -> SimulationSettings:
@@ -37,6 +38,14 @@ def parse_simulation_settings(arguments: Sequence[str] | None = None) -> Simulat
     )
 
     parser.add_argument(
+        "--transport",
+        type=PublisherTransport,
+        choices=list(PublisherTransport),
+        default=PublisherTransport.CONSOLE,
+        help="Telemetry output transport.",
+)
+
+    parser.add_argument(
         "--device-code",
         type=str,
         default=None,
@@ -57,6 +66,7 @@ def parse_simulation_settings(arguments: Sequence[str] | None = None) -> Simulat
         cycles=parsed_arguments.cycles,
         interval_seconds=parsed_arguments.interval,
         seed=parsed_arguments.seed,
+        transport=parsed_arguments.transport,
         device_code=parsed_arguments.device_code,
         scenario=parsed_arguments.scenario,
     )

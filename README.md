@@ -8,11 +8,11 @@ The project combines software development, data engineering, industrial telemetr
 
 ## Completed
 
-- [x] M0: Project preparation, defined architecture, rulles, technologies and goals
+- [x] M0: Project preparation, defined architecture, rules, technologies and goals
 - [x] M1: Simulator
+- [x] M2: MQTT broker and telemetry transport
 
 ## Next steps
-- [ ] M2: MQTT broker and telemetry transport
 - [ ] M3: MQTT-Kafka Bridge
 - [ ] M4: Redpanda and dead-letter topic
 - [ ] M5: Stream Processor
@@ -36,3 +36,8 @@ have passed.
 ## Simulator docs
 - [Telemetry Simulator](docs/simulator.md)
 - [Simulator Usage](simulator/README.md)
+
+## MQTT docs
+
+- [MQTT Broker and Telemetry Transport](docs/mqtt.md)
+- [Mosquitto Broker Usage](infrastructure/mosquitto/README.md)

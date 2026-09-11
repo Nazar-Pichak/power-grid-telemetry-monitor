@@ -334,7 +334,7 @@ The simulator supports:
 - deterministic generation using a fixed seed;
 - a targeted fault scenario for one transformer.
 
-Practical Docker commands are documented in `simulator/README.md`.
+Practical Docker commands are documented in [Simulator usage](../simulator/README.md).
 
 ## Module Responsibilities
 
