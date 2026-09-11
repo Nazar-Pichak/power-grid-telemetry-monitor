@@ -49,6 +49,9 @@ Start the complete Milestone 2 environment:
 docker compose up --build -d
 ```
 
+This also starts the simulator in continuous MQTT mode. Use only the `mqtt`
+service for the finite 12-message verification below.
+
 ## Broker Status and Logs
 
 Display the broker status:
@@ -60,7 +63,7 @@ docker compose ps mqtt
 Display broker logs:
 
 ```powershell
-docker compose logs mqtt
+docker compose logs -f mqtt
 ```
 
 The broker must report a running container with a healthy status.
@@ -78,10 +81,12 @@ docker compose exec mqtt mosquitto_sub `
   -v
 ```
 
-In another terminal, publish one simulator cycle through MQTT:
+In another terminal, publish one simulator cycle through MQTT. Keep the
+continuous `simulator` service stopped during this check so that the subscriber
+receives exactly one fleet cycle:
 
 ```powershell
-docker compose run --rm simulator python -m app.main `
+docker compose run --rm --no-deps simulator python -m app.main `
   --cycles 1 `
   --interval 0 `
   --seed 42 `
@@ -89,6 +94,20 @@ docker compose run --rm simulator python -m app.main `
 ```
 
 The subscriber must receive one message from each of the 12 transformers.
+
+The MQTT client ID currently defaults to `power-grid-simulator`. Do not run a
+second MQTT simulator alongside the continuous Compose simulator because the
+duplicate client ID can disconnect one of them.
+
+If Mosquitto client tools are installed on the host, the exposed port can also
+be checked with:
+
+```powershell
+mosquitto_sub -h localhost -p 1883 `
+  -t "grid/stations/+/devices/+/telemetry" `
+  -q 1 `
+  -v
+```
 
 Run the complete automated test suite:
 
