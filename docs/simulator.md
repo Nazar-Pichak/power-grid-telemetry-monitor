@@ -173,7 +173,9 @@ flowchart TD
     Measurements["Electrical measurements"]
     Message["Telemetry message"]
     Publisher["Publisher interface"]
+    Factory["Publisher factory"]
     Console["Console publisher"]
+    MQTT["MQTT publisher"]
 
     Settings --> Fleet
     Catalog --> Fleet
@@ -181,7 +183,11 @@ flowchart TD
     Device --> Measurements
     Measurements --> Message
     Message --> Publisher
+    Settings --> Factory
+    Factory --> Console
+    Factory --> MQTT
     Publisher --> Console
+    Publisher --> MQTT
 ```
 
 One simulation cycle produces:
@@ -190,7 +196,7 @@ One simulation cycle produces:
 12 transformer simulations
 → 12 telemetry messages
 → 12 publisher calls
-→ 12 JSON lines
+→ 12 published telemetry messages
 ```
 
 ## Class Architecture
@@ -253,9 +259,10 @@ classDiagram
     }
 
     class SimulationSettings {
-        +int cycles
+        +int? cycles
         +float interval_seconds
-        +int seed
+        +int? seed
+        +PublisherTransport transport
         +str device_code
         +FaultScenario scenario
     }
@@ -307,7 +314,7 @@ TelemetryPublisher
 └── ConsoleTelemetryPublisher
 ```
 
-Milestone 2 will add the MQTT adapter:
+Milestone 2 adds the MQTT adapter:
 
 ```text
 TelemetryPublisher
@@ -324,6 +331,7 @@ This design separates telemetry generation from its destination and allows publi
 | `--cycles` | continuous | Number of simulation cycles |
 | `--interval` | `1.0` | Delay between cycles in seconds |
 | `--seed` | random | Optional deterministic seed |
+| `--transport` | `console` | Output transport: `console` or `mqtt` |
 | `--device-code` | none | Transformer selected for a fault |
 | `--scenario` | `normal` | Scenario applied to the selected transformer |
 
@@ -358,6 +366,11 @@ Practical Docker commands are documented in [Simulator usage](../simulator/READM
 | `serialization.py` | Compact JSON serialization |
 | `publisher.py` | Transport-independent publisher protocol |
 | `console_publisher.py` | JSON Lines console adapter |
+| `transport.py` | Supported publisher transport values |
+| `publisher_factory.py` | Publisher selection and construction |
+| `mqtt/settings.py` | Validated MQTT connection settings |
+| `mqtt/topic.py` | Device-specific MQTT topic construction |
+| `mqtt/publisher.py` | MQTT connection and publishing adapter |
 | `application.py` | Application orchestration |
 | `main.py` | Container entry point |
 
@@ -374,7 +387,7 @@ Milestone 1 is covered by:
 - finite and continuous loop tests;
 - manual Docker runtime verification.
 
-Final automated result:
+Final Milestone 1 automated result, recorded before MQTT tests were added:
 
 ```text
 166 passed
@@ -405,5 +418,5 @@ Manual verification confirmed:
 - [x] Console JSON Lines output works.
 - [x] The simulator runs through Docker Compose.
 - [x] Automated tests pass.
-- [x] Test coverage reaches 99%.
+- [x] Milestone 1 test coverage reached 99% at completion.
 - [x] Runtime behaviour is documented and verified.
