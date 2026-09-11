@@ -30,7 +30,7 @@ docker compose build simulator-tests
 Run one cycle without delay:
 
 ```powershell
-docker compose run --rm simulator python -m app.main `
+docker compose run --rm --no-deps simulator python -m app.main `
     --cycles 1 `
     --interval 0 `
     --seed 42
@@ -41,7 +41,7 @@ One cycle produces twelve JSON messages.
 Run two deterministic cycles:
 
 ```powershell
-docker compose run --rm simulator python -m app.main `
+docker compose run --rm --no-deps simulator python -m app.main `
     --cycles 2 `
     --interval 0 `
     --seed 42
@@ -52,7 +52,7 @@ docker compose run --rm simulator python -m app.main `
 Run continuously with a one-second interval:
 
 ```powershell
-docker compose run --rm simulator python -m app.main `
+docker compose run --rm --no-deps simulator python -m app.main `
     --interval 1 `
     --seed 42
 ```
@@ -64,7 +64,7 @@ Stop the simulator with `Ctrl+C`.
 Apply overheating to one selected transformer:
 
 ```powershell
-docker compose run --rm simulator python -m app.main `
+docker compose run --rm --no-deps simulator python -m app.main `
     --cycles 2 `
     --interval 0 `
     --seed 42 `
@@ -86,7 +86,7 @@ Supported scenarios:
 Display all available options:
 
 ```powershell
-docker compose run --rm simulator python -m app.main --help
+docker compose run --rm --no-deps simulator python -m app.main --help
 ```
 
 | Argument | Description |
@@ -108,27 +108,39 @@ The simulator supports two output transports:
 | `console` | Writes one compact JSON object per line |
 | `mqtt` | Publishes each message to a device-specific MQTT topic |
 
-Console output is the default when the simulator is started directly.
+Console output is the CLI default when `python -m app.main` is invoked directly.
+The `simulator` service in `docker-compose.yml` overrides this default and uses
+MQTT transport when started with `docker compose up`.
 
 Run one cycle with console output:
 
 ```powershell
-docker compose run --rm simulator python -m app.main `
+docker compose run --rm --no-deps simulator python -m app.main `
     --cycles 1 `
     --interval 0 `
     --transport console
 ```
 
-Run one cycle through MQTT:
+Start the broker and run one cycle through MQTT:
 
 ```powershell
-docker compose run --rm simulator python -m app.main `
+docker compose up -d mqtt
+```
+
+```powershell
+docker compose run --rm --no-deps simulator python -m app.main `
     --cycles 1 `
     --interval 0 `
     --transport mqtt
 ```
 
-The MQTT broker must be running before the MQTT transport is used. Broker setup and operating commands are documented in [Mosquitto Broker Usage](../infrastructure/mosquitto/README.md).
+MQTT messages use the following device-specific topic pattern:
+
+```text
+grid/stations/{stationCode}/devices/{deviceCode}/telemetry
+```
+
+Broker setup and operating commands are documented in [Mosquitto Broker Usage](../infrastructure/mosquitto/README.md).
 
 ## Tests
 
@@ -144,16 +156,20 @@ Run one test module:
 docker compose run --rm simulator-tests pytest -v tests/test_fleet.py
 ```
 
-Final Milestone 1 test result:
+Historical Milestone 1 result, recorded before MQTT tests were added:
 
 ```text
 166 passed
 99% statement coverage
 ```
 
-## Output
+Do not treat this historical count as the current complete-suite result. Run the
+test command above to obtain the current count and coverage.
 
-The simulator writes one compact JSON object per line.
+## Console Output
+
+The console transport writes one compact JSON object per line. The example below
+is formatted for readability:
 
 Example:
 
@@ -177,6 +193,20 @@ Example:
 ```
 
 Each line represents one complete and independently validated transformer telemetry message.
+
+## Stop Services
+
+Stop only the MQTT broker:
+
+```powershell
+docker compose stop mqtt
+```
+
+Stop and remove the complete local environment:
+
+```powershell
+docker compose down
+```
 
 ## Related Documentation
 
