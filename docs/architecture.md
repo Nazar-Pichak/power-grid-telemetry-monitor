@@ -9,19 +9,22 @@ The following diagram presents the target architecture of the Power Grid Telemet
 ## Architecture Overview
 
 The system simulates telemetry from 12 electrical devices distributed across multiple substations.
-Telemetry is generated continuously and transferred through a live-streaming data pipeline. Every component has a clearly defined responsibility and will be implemented as a separate project milestone.
+Telemetry is generated continuously and transferred through a live-streaming data pipeline. Every component has a clearly defined responsibility and is introduced through a documented project milestone. A milestone may deliver more than one closely related component.
 Supporting components provide database migrations, operational monitoring, dead-letter handling, technical inspection, and automated testing.
 
-## Technology Stack
+## Target Technology Stack
+
+This table describes the completed and planned target architecture. The project
+status in the root README identifies which milestones are currently implemented.
 
 | Area                 | Technology                       | Purpose                                                          |
 | -------------------- | -------------------------------- | ---------------------------------------------------------------- |
 | Programming language | Python                           | Simulator, bridge, stream processing, monitoring, API, and tests |
-| Data validation      | Pydantic                         | Telemetry models, configuration, and schema validation           |
+| Data validation      | Pydantic                         | Public telemetry contracts and schema validation                 |
 | Device messaging     | MQTT                             | Lightweight transport for simulated device telemetry             |
 | MQTT broker          | Eclipse Mosquitto                | Receives telemetry messages from simulated devices               |
 | Streaming platform   | Redpanda                         | Kafka-compatible storage and transport for streaming records     |
-| Kafka client         | Python Kafka client              | Produces and consumes Redpanda records                           |
+| Kafka client         | To be selected                   | Produces and consumes Redpanda records                           |
 | Stream processing    | Python                           | Validates, deduplicates, classifies, and persists telemetry      |
 | Database             | PostgreSQL                       | Stores telemetry, device states, aggregates, and events          |
 | Database migrations  | Versioned SQL migrations         | Creates and updates the database schema deterministically        |
@@ -177,9 +180,9 @@ The system will be developed in the following order:
 5. Redpanda and dead-letter topic;
 6. Stream Processor;
 7. PostgreSQL schema and migrations;
-8. Monitoring Worker;
-9. FastAPI;
-10. React Dashboard;
+8. FastAPI;
+9. React Dashboard;
+10. Monitoring Worker;
 11. integration and end-to-end tests;
 12. resilience testing;
 13. retention and storage management;
