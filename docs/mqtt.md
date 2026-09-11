@@ -19,7 +19,7 @@ Milestone 2 includes:
 - publisher selection through the command-line interface;
 - Docker Compose service dependencies and broker health checks;
 - unit tests for MQTT configuration and publishing;
-- end-to-end verification with a real MQTT subscriber;
+- a manual end-to-end verification procedure using a real MQTT subscriber;
 - documented failure behaviour when the broker is unavailable.
 
 Milestone 2 does not include:
@@ -102,7 +102,7 @@ Telemetry is published with the following MQTT settings:
 
 QoS 1 provides at-least-once delivery. The publisher waits for the broker's `PUBACK` response before considering a message successfully published.
 
-Because QoS 1 permits duplicate delivery, downstream components must not assume that every received message is unique. Later processing stages will use `messageId`, `deviceCode`, and `sequence` for duplicate detection.
+Because QoS 1 permits duplicate delivery, downstream components must not assume that every received message is unique. Planned processing stages will use `messageId`, `deviceCode`, and `sequence` for duplicate detection. Subscriber delivery guarantees also depend on the QoS selected by each subscription.
 
 Retained messages are disabled because telemetry represents a continuous event stream.
 
@@ -131,7 +131,7 @@ close()
 
 `MqttTelemetryPublisher.close()` disconnects the client and stops the network loop. The application calls `close()` even if publishing raises an exception.
 
-## Runtime Configuration
+## Current MQTT Defaults
 
 The output transport is selected with the `--transport` command-line option.
 
@@ -140,7 +140,7 @@ The output transport is selected with the `--transport` command-line option.
 | `console` | `ConsoleTelemetryPublisher` | Writes JSON Lines to standard output |
 | `mqtt` | `MqttTelemetryPublisher` | Publishes telemetry to the MQTT broker |
 
-The MQTT publisher uses these default connection settings:
+The MQTT publisher currently uses these values directly from `MqttSettings`:
 
 | Setting | Default value |
 |---|---|
@@ -153,6 +153,9 @@ The MQTT publisher uses these default connection settings:
 | Publish timeout | `10` seconds |
 
 The hostname `mqtt` is the Docker Compose service name. Docker resolves it to the broker container on the shared Compose network.
+
+These settings are not currently exposed through CLI options or environment
+variables. Changing them requires a code change.
 
 Operational commands for starting and inspecting Mosquitto are documented in [Eclipse Mosquitto broker](../infrastructure/mosquitto/README.md).
 
@@ -187,7 +190,10 @@ Automated tests verify:
 - resource cleanup;
 - application error handling.
 
-The complete test suite must pass and maintain at least 95% total coverage. Operational verification commands are documented in [Eclipse Mosquitto broker](../infrastructure/mosquitto/README.md).
+The complete test suite must pass and maintain at least 95% total coverage. Run
+the test and operational verification commands documented in
+[Eclipse Mosquitto broker](../infrastructure/mosquitto/README.md) before marking
+the milestone verification current.
 
 ## Definition of Done
 
